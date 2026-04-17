@@ -1,0 +1,35 @@
+{
+  "jobs": [
+    {
+      "title": "Backend Engineer",
+      "company": "Obens",
+      "period": "Jan 2024 - Present",
+      "description": [
+        "Led backend architecture and development of a custom ERP traceability platform for a national cooperative",
+        "Collaborated with frontend team to define GraphQL schemas, data flows, and component requirements for Next.js-based UI",
+        "Improved system reliability and performance by refactoring API flows and reducing data inconsistencies",
+        "Contributed to CI/CD pipelines and automated deployments on Kubernetes"
+      ],
+      "tech": ["Spring Boot", "MongoDB", "GraphQL", "Kubernetes", "Docker", "CI/CD"]
+    },
+    {
+      "title": "Web Developer Intern",
+      "company": "AdSello",
+      "period": "Mar 2021 - Jul 2021",
+      "description": [
+        "Built a school management system used by teachers and administrators",
+        "Designed database models and implemented logic for scheduling, student records, and dashboards"
+      ],
+      "tech": ["Laravel", "Livewire", "MySQL"]
+    },
+    {
+      "title": "Web Developer Intern",
+      "company": "Delta Solutions",
+      "period": "May 2020 - Jun 2020",
+      "description": [
+        "Developed a custom article management system and improved internal workflows for developers"
+      ],
+      "tech": ["Laravel"]
+    }
+  ]
+}

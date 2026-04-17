@@ -1,0 +1,76 @@
+{
+  "projects": [
+    {
+      "title": "Cinema",
+      "description": "Full-featured cinema administration platform built with Spring MVC, Hibernate/JPA, and FreeMarker, featuring real-time search, WebSocket-based chat rooms, and complete theater management",
+      "tech": ["Java", "Spring_MVC", "Hibernate", "JPA", "PostgreSQL", "FreeMarker", "WebSockets", "STOMP", "jQuery", "Apache_Tomcat"],
+      "github": "https://github.com/baraegh/Cinema",
+      "highlights": [
+        "Admin panel for managing halls, films, and sessions with Hibernate ORM",
+        "Live AJAX search with real-time session filtering",
+        "WebSocket-based chat rooms per film with message persistence",
+        "File upload system with UUID-based naming for posters and avatars",
+        "Spring MVC architecture without Spring Boot"
+      ]
+    },
+    {
+      "title": "Inception-of-Things (IN PROGRESS)",
+      "description": "Kubernetes infrastructure automation with K3s/K3d, Vagrant, and GitOps using Argo CD for continuous deployment",
+      "tech": ["Kubernetes", "K3s", "K3d", "Vagrant", "Argo_CD", "Docker", "GitOps", "Ingress"],
+      "github": "https://github.com/baraegh/Inception_of_things",
+      "highlights": [
+        "Multi-VM K3s cluster with controller and worker nodes via Vagrant",
+        "Ingress-based routing for multiple applications with host-based rules",
+        "GitOps workflow with Argo CD for automated application deployment",
+        "Continuous integration from GitHub repository to Kubernetes cluster",
+        "Scripted infrastructure setup and service orchestration"
+      ]
+    },
+    {
+      "title": "Ft_transcendence",
+      "description": "Real-time multiplayer Ping-Pong platform with websockets, chat system, user authentication, and match ranking logic",
+      "tech": ["NestJS", "React", "TypeScript", "PostgreSQL"],
+      "github": "https://github.com/baraegh/ft_transcendence",
+      "highlights": [
+        "Real-time websockets for multiplayer games",
+        "Implemented authentication and user profiles",
+        "Match histories and ranking system"
+      ]
+    },
+    {
+      "title": "Inception",
+      "description": "Multi-container Docker infrastructure with NGINX, WordPress, and MariaDB, orchestrated via Docker Compose with TLS, volumes, and custom networks",
+      "tech": ["Docker", "Docker_Compose", "NGINX", "WordPress", "MariaDB", "TLS/SSL", "Alpine_Linux"],
+      "github": "https://github.com/baraegh/Inception",
+      "highlights": [
+        "Custom Dockerfiles for each service without pre-built images",
+        "TLS v1.2/v1.3 encryption with self-signed certificates",
+        "Docker volumes for persistent WordPress database and files",
+        "Secure credential management with Docker secrets and .env files",
+        "Automated deployment via Makefile and docker-compose"
+      ]
+    },
+    {
+      "title": "Webserv",
+      "description": "C++ HTTP Server implemented from scratch with non-blocking I/O, CGI support, and multi-port capability",
+      "tech": ["C++", "HTTP", "CGI"],
+      "github": "https://github.com/rimney/WebServ",
+      "highlights": [
+        "Non-blocking I/O and cookie handling",
+        "Multi-port support",
+        "Strong focus on performance and correctness"
+      ]
+    },
+    {
+      "title": "Ft_containers",
+      "description": "Recreation of C++ STL containers (vector, stack, map) according to C++98 standard",
+      "tech": ["C++", "STL", "Data_Structures"],
+      "github": "https://github.com/baraegh/cursus42",
+      "highlights": [
+        "Memory management optimization",
+        "Deep understanding of data structures",
+        "C++98 standard compliance"
+      ]
+    }
+  ]
+}

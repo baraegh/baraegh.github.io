@@ -1,0 +1,22 @@
+{
+  "site": {
+    "title": "Elbarae El-Ghannouchi - Backend Engineer",
+    "description": "Backend Engineer specializing in Java, Spring Boot, and scalable system design",
+    "author": "Elbarae El-Ghannouchi"
+  },
+  "personal": {
+    "firstName": "Elbarae",
+    "lastName": "El-Ghannouchi",
+    "title": "Backend Engineer",
+    "tagline": "Building scalable systems with Java and Spring Boot. Experienced in REST/GraphQL APIs, microservices architecture, and cloud deployments.",
+    "location": "Ben guerir, Morocco",
+    "phone": "+212 708245933",
+    "email": "barae.gh@gmail.com"
+  },
+  "logo": "<barae />",
+  "navItems": ["About", "Experience", "Projects", "Contact"],
+  "socialLinks": {
+    "github": "https://github.com/baraegh",
+    "linkedin": "https://linkedin.com/in/baraegh"
+  }
+}

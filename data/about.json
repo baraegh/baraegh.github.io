@@ -1,0 +1,13 @@
+{
+  "paragraphs": [
+    "Backend Engineer with strong foundations in Java, data structures, and backend development. Currently working at Obens, building scalable ERP systems with Spring Boot, MongoDB, and Kubernetes.",
+    "My journey includes full-stack projects with React and TypeScript, with a focus on code quality, performance optimization, and system design. Student at 1337 Coding School (42 Network), building low-level systems and real-time applications.",
+    "Based in Ben guerir, Morocco, actively contributing to production systems and exploring opportunities in distributed systems and cloud architecture."
+  ],
+  "skills": {
+    "Backend": ["Java", "Spring Boot", "REST", "GraphQL", "MongoDB", "PostgreSQL"],
+    "DevOps": ["Docker", "Kubernetes", "CI/CD", "GitHub Actions"],
+    "Frontend": ["React", "TypeScript", "JavaScript", "HTML/CSS"],
+    "Other": ["C++", "FusionAuth", "Cerbos"]
+  }
+}
