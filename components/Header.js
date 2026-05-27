@@ -1,7 +1,8 @@
 
 const Header = () => {
   const [config, setConfig] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
+  const headerRef = React.useRef(null);
+  const [menuOpen, setMenuOpen] = React.useState(false);
 
   // Fetch config on mount
   React.useEffect(() => {
@@ -11,167 +12,228 @@ const Header = () => {
       .catch(() => setConfig(null));
   }, []);
 
-  // Lock scroll when sidebar is open
+  // Sync header height into CSS variable so hero offsets correctly when nav wraps
   React.useEffect(() => {
-    if (open) {
-      document.body.style.overflow = 'hidden';
-    } else {
+    const setHeaderHeight = () => {
+      const el = headerRef.current;
+      if (!el) return;
+      const height = el.offsetHeight;
+      document.documentElement.style.setProperty('--header-height', `${height}px`);
+    };
+
+    setHeaderHeight();
+    window.addEventListener('resize', setHeaderHeight);
+    const ro = new ResizeObserver(setHeaderHeight);
+    if (headerRef.current) ro.observe(headerRef.current);
+
+    return () => {
+      window.removeEventListener('resize', setHeaderHeight);
+      if (ro && headerRef.current) ro.unobserve(headerRef.current);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+
+    return () => {
       document.body.style.overflow = '';
-    }
-  }, [open]);
+    };
+  }, [menuOpen]);
 
   if (!config) return null;
 
   return (
     <>
-      <header style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
+      <header ref={headerRef} style={{
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1100,
         background: 'rgba(10, 10, 10, 0.95)', backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid var(--border)', transition: 'all 0.3s ease', padding: '1.5rem 0'
+        borderBottom: '1px solid var(--border)', transition: 'all 0.3s ease', padding: '1.25rem 0'
       }}>
-        <div className="container" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+        <div className="container" style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'relative'}}>
           <div style={{fontFamily: "'JetBrains Mono', monospace", fontSize: '1rem', color: 'var(--accent-primary)', fontWeight: '600'}}>
             {config.logo}
           </div>
-          {/* Hamburger for mobile */}
-          <button
-            aria-label={open ? "Close menu" : "Open menu"}
-            onClick={() => setOpen(!open)}
-            style={{
-              display: 'none',
-              background: 'none',
-              border: 'none',
-              outline: 'none',
-              cursor: 'pointer',
-              zIndex: 1201
-            }}
-            className="header-hamburger"
-          >
-            <span style={{
-              display: 'block',
-              width: 28,
-              height: 3,
-              background: 'var(--accent-primary)',
-              margin: '6px 0',
-              borderRadius: 2,
-              transition: '0.3s'
-            }} />
-            <span style={{
-              display: 'block',
-              width: 28,
-              height: 3,
-              background: 'var(--accent-primary)',
-              margin: '6px 0',
-              borderRadius: 2,
-              transition: '0.3s'
-            }} />
-            <span style={{
-              display: 'block',
-              width: 28,
-              height: 3,
-              background: 'var(--accent-primary)',
-              margin: '6px 0',
-              borderRadius: 2,
-              transition: '0.3s'
-            }} />
-          </button>
-          {/* Desktop nav */}
+
+          {/* Mobile toggle button (shown via CSS) */}
+          <div className="header-mobile-toggle-wrap" style={{position: 'absolute', top: '50%', right: 0, transform: 'translateY(-50%)', zIndex: 1150}}>
+            <button
+              className="header-mobile-toggle"
+              aria-label={menuOpen ? 'Close menu' : 'Open menu'}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-nav"
+              onClick={() => setMenuOpen(v => !v)}
+              style={{ display: menuOpen ? 'none' : undefined }}
+            >
+              <span style={{display: 'inline-block', width: 20, height: 2, background: 'currentColor', boxShadow: '0 6px currentColor, 0 -6px currentColor'}} />
+            </button>
+          </div>
+
+          {/* Main nav (desktop) */}
           <nav className="header-desktop-nav" style={{
             display: 'flex',
-            gap: '2rem'
+            gap: '1.5rem',
+            alignItems: 'center'
           }}>
             {config.navItems.map((item, i) => (
               <a key={item} href={`#${item.toLowerCase()}`}
                 style={{color: 'var(--text-secondary)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '500', transition: 'color 0.3s ease', animationDelay: `${i * 0.1}s`}}
-                className="fade-in-up"
                 onMouseEnter={e => e.target.style.color = 'var(--accent-primary)'}
                 onMouseLeave={e => e.target.style.color = 'var(--text-secondary)'}
               >{item}</a>
             ))}
           </nav>
+
+          {/* Mobile nav dropdown */}
+          <div className={`header-mobile-backdrop ${menuOpen ? 'is-open' : ''}`} onClick={() => setMenuOpen(false)} aria-hidden="true" />
+
+          <div className={`header-mobile-nav ${menuOpen ? 'is-open' : ''}`} aria-hidden={!menuOpen}>
+            <div className="header-mobile-nav-top">
+              <span style={{fontFamily: "'JetBrains Mono', monospace", color: 'var(--accent-primary)', fontSize: '0.85rem', letterSpacing: '0.2em'}}>MENU</span>
+              <button
+                className="header-mobile-toggle header-mobile-toggle-close"
+                aria-label="Close menu"
+                onClick={() => setMenuOpen(false)}
+                style={{display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 40, height: 40, background: 'transparent', border: 'none', cursor: 'pointer'}}
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M6 6 L18 18 M6 18 L18 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+                </svg>
+              </button>
+            </div>
+
+            <nav className="header-mobile-links">
+              {config.navItems.map((item, i) => (
+                <a
+                  key={item + '-m'}
+                  href={`#${item.toLowerCase()}`}
+                  style={{animationDelay: `${i * 0.08}s`}}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span className="header-mobile-link-index">0{i + 1}.</span>
+                  <span>{item}</span>
+                </a>
+              ))}
+            </nav>
+          </div>
         </div>
       </header>
-      {/* Sidebar for mobile */}
-      <div
-        className="header-sidebar"
-        style={{
-          position: 'fixed',
-          top: 0,
-          right: open ? 0 : '-100vw',
-          width: '70vw',
-          maxWidth: 320,
-          height: '100vh',
-          background: 'var(--bg-secondary)',
-          boxShadow: open ? '-2px 0 24px 0 rgba(0,0,0,0.25)' : 'none',
-          zIndex: 1200,
-          transition: 'right 0.5s cubic-bezier(.77,0,.18,1)',
-          willChange: 'right',
-          overflowY: 'auto',
-          display: 'flex',
-          flexDirection: 'column',
-          padding: '2.5rem 2rem 2rem 2rem'
-        }}
-        aria-hidden={!open}
-      >
-        <button
-          aria-label="Close menu"
-          onClick={() => setOpen(false)}
-          style={{
-            alignSelf: 'flex-end',
-            background: 'none',
-            border: 'none',
-            fontSize: 32,
-            color: 'var(--accent-primary)',
-            marginBottom: '2rem',
-            cursor: 'pointer'
-          }}
-        >&times;</button>
-        <nav style={{display: 'flex', flexDirection: 'column', gap: '2rem'}}>
-          {config.navItems.map(item => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
-              style={{
-                color: 'var(--text-primary)',
-                textDecoration: 'none',
-                fontSize: '1.2rem',
-                fontWeight: '600',
-                fontFamily: "'JetBrains Mono', monospace",
-                letterSpacing: '0.02em'
-              }}
-              onClick={() => setOpen(false)}
-            >
-              {item}
-            </a>
-          ))}
-        </nav>
-      </div>
-      {/* Overlay */}
-      {open && (
-        <div
-          onClick={() => setOpen(false)}
-          style={{
-            position: 'fixed',
-            top: 0, left: 0, right: 0, bottom: 0,
-            background: 'rgba(0,0,0,0.35)',
-            zIndex: 1199
-          }}
-          aria-hidden="true"
-        />
-      )}
       {/* Responsive styles */}
       <style>{`
+        .header-mobile-toggle-wrap {
+          display: none;
+        }
+
+        .header-mobile-toggle {
+          display: none;
+        }
+
+        .header-mobile-nav, .header-mobile-backdrop { display: none; }
+
         @media (max-width: 900px) {
+          .header-mobile-toggle-wrap {
+            display: flex;
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            z-index: 1150;
+          }
+
           .header-desktop-nav {
             display: none !important;
           }
-          .header-hamburger {
-            display: block !important;
+
+          .header-mobile-toggle {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            gap: 0.25rem;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            color: var(--text-primary);
+            padding: 0.35rem 0.5rem;
+            border-radius: 8px;
           }
-        }
-        @media (min-width: 901px) {
-          .header-sidebar {
-            display: none !important;
+
+          .header-mobile-toggle span { display: block; }
+
+          .header-mobile-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.35s ease;
+          }
+
+          .header-mobile-backdrop.is-open {
+            opacity: 1;
+            pointer-events: auto;
+          }
+
+          .header-mobile-nav {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100vw;
+            height: 100dvh;
+            padding: 1.25rem 1.5rem 2rem;
+            background: linear-gradient(180deg, rgba(10, 10, 10, 0.98), rgba(10, 10, 10, 0.96));
+            border-left: 1px solid var(--border);
+            transform: translateX(100%);
+            transition: transform 0.42s cubic-bezier(.2,.9,.2,1);
+            display: flex;
+            flex-direction: column;
+            z-index: 1200;
+          }
+
+          .header-mobile-nav.is-open {
+            transform: translateX(0);
+          }
+
+          .header-mobile-nav-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+          }
+
+          .header-mobile-toggle-close {
+            display: inline-flex !important;
+          }
+
+          .header-mobile-links {
+            display: grid;
+            gap: 0.6rem;
+          }
+
+          .header-mobile-links a {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+            padding: 1rem 0;
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: clamp(1.75rem, 7vw, 2.5rem);
+            font-weight: 700;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            opacity: 0;
+            transform: translateX(14px);
+            animation: slideInRight 0.5s ease forwards;
+          }
+
+          .header-mobile-links a:last-child {
+            border-bottom: none;
+          }
+
+          .header-mobile-link-index {
+            color: var(--accent-primary);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            min-width: 3.25rem;
+            flex-shrink: 0;
           }
         }
       `}</style>

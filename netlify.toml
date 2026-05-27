@@ -1,0 +1,20 @@
+# Netlify configuration file
+
+[build]
+  # No build command needed - static HTML
+  publish = "."
+  
+[[redirects]]
+  # Single Page Application routing
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  # Cache static assets
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Cache-Control = "public, max-age=31536000"

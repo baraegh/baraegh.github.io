@@ -22,9 +22,9 @@ const Projects = () => {
   if (!projectsData || !config) return null;
 
   return (
-    <section id="projects" style={{padding: '8rem 0', background: 'var(--bg-secondary)'}}>
+    <section id="projects" style={{padding: '8rem 0', background: 'var(--bg-secondary)'}} className="motion-section">
       <div className="container">
-        <h2 style={{fontSize: '2.5rem', fontWeight: '700', marginBottom: '3rem', display: 'flex', alignItems: 'center', gap: '1rem'}}>
+        <h2 style={{fontSize: '2.5rem', fontWeight: '700', marginBottom: '3rem', display: 'flex', alignItems: 'center', gap: '1rem'}} className="motion-underline">
           <span style={{color: 'var(--accent-primary)', fontFamily: "'JetBrains Mono', monospace", fontSize: '1.5rem'}}>03.</span>
           Projects
           <div style={{flex: 1, height: '1px', background: 'var(--border)', maxWidth: '300px'}} />
@@ -46,12 +46,12 @@ const Projects = () => {
                 minHeight: '220px',
                 transition: 'all 0.3s ease',
                 animationDelay: `${i * 0.1}s`
-              }} className="fade-in-up"
+              }} className="fade-in-up motion-card"
                 onMouseEnter={e => {e.currentTarget.style.borderColor = 'var(--accent-secondary)'; e.currentTarget.style.transform = 'translateY(-10px)';}}
                 onMouseLeave={e => {e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateY(0)';}}>
                 <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem'}}>
                   <div style={{fontSize: '2rem', color: 'var(--accent-secondary)'}}>📁</div>
-                  <a href={project.github} target="_blank" rel="noopener noreferrer" style={{color: 'var(--text-secondary)', fontSize: '1.3rem', transition: 'color 0.3s ease'}} onMouseEnter={e => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={e => e.target.style.color = 'var(--text-secondary)'}>↗</a>
+                  <a href={project.github} target="_blank" rel="noopener noreferrer" style={{color: 'var(--text-secondary)', fontSize: '1.3rem', transition: 'color 0.3s ease'}} className="motion-link" onMouseEnter={e => e.target.style.color = 'var(--accent-primary)'} onMouseLeave={e => e.target.style.color = 'var(--text-secondary)'}>↗</a>
                 </div>
                 <h3 style={{fontSize: '1.5rem', fontWeight: '600', color: 'var(--text-primary)', marginBottom: '1rem'}}>{project.title}</h3>
                 <p style={{color: 'var(--text-secondary)', marginBottom: '1rem', lineHeight: '1.6'}}>{desc}</p>
@@ -78,6 +78,7 @@ const Projects = () => {
         </div>
         <div style={{textAlign: 'center', marginTop: '4rem'}}>
           <a href={config.socialLinks.github} target="_blank" rel="noopener noreferrer" style={{padding: '1rem 2rem', background: 'transparent', border: '2px solid var(--accent-secondary)', color: 'var(--accent-secondary)', textDecoration: 'none', fontSize: '1rem', fontWeight: '500', transition: 'all 0.3s ease', fontFamily: "'JetBrains Mono', monospace", display: 'inline-block'}}
+            className="motion-link"
             onMouseEnter={e => {e.target.style.background = 'var(--accent-secondary)'; e.target.style.color = 'var(--bg-primary)';}}
             onMouseLeave={e => {e.target.style.background = 'transparent'; e.target.style.color = 'var(--accent-secondary)';}}
           >View More on GitHub</a>

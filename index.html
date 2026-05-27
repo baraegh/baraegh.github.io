@@ -29,10 +29,28 @@
             box-sizing: border-box;
         }
 
+        /* Hide green pseudo only on small phones */
+        @media (max-width: 767px) {
+            .hero-backdrop::before { display: none; }
+        }
+
+        /* Phone-only: use toned-down blue backdrop on small screens */
+        @media (max-width: 767px) {
+            .hero-backdrop {
+                background:
+                    radial-gradient(circle at 50% 52%, rgba(0, 136, 255, 0.06) 0%, transparent 42%),
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 26%),
+                    linear-gradient(180deg, #101010 0%, #0a0a0a 100%);
+            }
+            .hero-image-frame { width: 300px; }
+        }
+
         :root {
             --bg-primary: #0a0a0a;
             --bg-secondary: #141414;
+            --bg-about: #171717;
             --bg-card: #1a1a1a;
+            --header-height: 74px;
             --accent-primary: #00ff88;
             --accent-secondary: #0088ff;
             --text-primary: #ffffff;
@@ -48,6 +66,12 @@
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        ::selection {
+            background: rgba(0, 255, 136, 0.2);
+            color: var(--text-primary);
         }
 
         .grain {
@@ -82,7 +106,6 @@
             }
         }
 
-        /* Animations */
         @keyframes fadeInUp {
             from {
                 opacity: 0;
@@ -95,12 +118,8 @@
         }
 
         @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
 
         @keyframes slideInRight {
@@ -114,48 +133,1065 @@
             }
         }
 
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
+        @keyframes floatGentle {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes glowPulse {
+            0%, 100% {
+                opacity: 0.55;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.85;
+                transform: scale(1.06);
+            }
+        }
+
+        @keyframes sheen {
+            0% {
+                transform: translateX(-120%) skewX(-18deg);
+                opacity: 0;
+            }
+            20% { opacity: 0.3; }
+            100% {
+                transform: translateX(120%) skewX(-18deg);
+                opacity: 0;
+            }
+        }
+
+        .fade-in-up,
+        .slide-in-right,
+        .motion-section,
+        .motion-card,
+        .motion-chip,
+        .motion-link,
+        .motion-divider {
+            opacity: 0;
+            transform: translateY(20px);
+            transition-property: opacity, transform, border-color, box-shadow, background-color, color;
+            transition-duration: 0.75s;
+            transition-timing-function: ease;
         }
 
         .slide-in-right {
-            animation: slideInRight 0.8s ease-out forwards;
+            transform: translateX(32px);
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
+        .motion-section {
+            position: relative;
+            isolation: isolate;
         }
 
-        ::-webkit-scrollbar-track {
-            background: var(--bg-primary);
+        .motion-card {
+            transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, background-color 0.35s ease, opacity 0.75s ease;
+            will-change: transform;
         }
 
+        .motion-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.28);
+        }
+
+        .motion-chip {
+            transition: transform 0.25s ease, border-color 0.25s ease, color 0.25s ease, background-color 0.25s ease;
+        }
+
+        .motion-chip:hover {
+            transform: translateY(-2px);
+        }
+
+        .motion-link {
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        .motion-link::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(120deg, transparent 0%, rgba(255, 255, 255, 0.12) 50%, transparent 100%);
+            transform: translateX(-120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .motion-link:hover::before {
+            animation: sheen 0.9s ease;
+        }
+
+        .hero-float {
+            animation: floatGentle 6s ease-in-out infinite;
+        }
+
+        .hero-glow {
+            animation: glowPulse 4s ease-in-out infinite;
+        }
+        .motion-card:hover .motion-chip {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .motion-card:hover .motion-link,
+        .motion-link:hover {
+            transform: translateY(-2px);
+        }
+
+        .motion-underline {
+            position: relative;
+        }
+
+        .motion-underline::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -0.35rem;
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, var(--accent-primary), transparent);
+            transform: scaleX(0.35);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .motion-card:hover .motion-underline::after,
+        .motion-underline:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Hero editorial layout styles */
+        .hero-split {
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding-top: max(5rem, calc(var(--header-height) + 1.5rem));
+            padding-bottom: 5rem;
+            overflow: hidden;
+        }
+
+        .hero-editorial {
+            isolation: isolate;
+        }
+
+        .hero-stage {
+            position: sticky;
+            top: 0;
+            z-index: 0;
+            height: 100dvh;
+            overflow: clip;
+        }
+
+        .hero-backdrop {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 50% 44%, rgba(0, 255, 136, 0.30) 0%, rgba(0, 255, 136, 0.16) 16%, transparent 38%),
+                radial-gradient(circle at 50% 52%, rgba(0, 136, 255, 0.08) 0%, transparent 42%),
+                linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 26%),
+                linear-gradient(180deg, #101010 0%, #0a0a0a 100%);
+            pointer-events: none;
+            z-index: -2;
+        }
+
+        .hero-backdrop::before,
+        .hero-backdrop::after {
+            content: '';
+            position: absolute;
+            border-radius: 999px;
+            pointer-events: none;
+            filter: blur(18px);
+            opacity: 0.55;
+        }
+
+        .hero-backdrop::before {
+            width: 320px;
+            height: 320px;
+            left: 50%;
+            top: 34%;
+            transform: translateX(-50%);
+            background: rgba(0, 255, 136, 0.08);
+        }
+
+        .hero-backdrop::after {
+            width: 180px;
+            height: 180px;
+            right: 7%;
+            top: 18%;
+            background: rgba(0, 136, 255, 0.06);
+        }
+
+        /* Fallback green accent element for iPads (injected via script) */
+        .hero-backdrop .hero-green {
+            position: absolute;
+            left: 50%;
+            top: 34%;
+            transform: translateX(-50%);
+            width: 380px;
+            height: 380px;
+            border-radius: 999px;
+            background: rgba(0, 255, 136, 0.08);
+            filter: blur(18px);
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.55;
+        }
+
+        /* Chevron that cuts into the hero and reveals the About section (SVG-based) */
+        .hero-chevron {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -2px;
+            height: 12rem;
+            pointer-events: none;
+            z-index: 3;
+            display: flex;
+            justify-content: center;
+            transform: translateY(36px);
+            transition: transform 520ms cubic-bezier(.2,.9,.2,1);
+            will-change: transform;
+        }
+
+        .hero-chevron-svg {
+            width: min(980px, 92%);
+            height: 100%;
+            overflow: visible;
+            display: block;
+        }
+
+        .hero-chevron .chev-body {
+            fill: url(#chevGrad);
+            opacity: 0.95;
+            stroke: rgba(255,255,255,0.035);
+            stroke-width: 1.2;
+            filter: url(#softBlur);
+            mix-blend-mode: overlay;
+        }
+
+        .hero-chevron .chev-edge {
+            stroke: rgba(0,255,136,0.12);
+            stroke-width: 1.5;
+            stroke-linejoin: round;
+            stroke-linecap: round;
+            opacity: 0.9;
+        }
+
+        .hero-chevron .shard {
+            fill: rgba(0,255,136,0.06);
+            stroke: rgba(0,255,136,0.14);
+            stroke-width: 0.8;
+            opacity: 0.9;
+        }
+
+        .hero-inner {
+            display: grid;
+            grid-template-columns: minmax(220px, 1fr) minmax(360px, 1.25fr) minmax(180px, 0.9fr);
+            grid-template-rows: auto minmax(420px, 1fr) auto;
+            gap: 1.5rem 2rem;
+            align-items: start;
+            width: min(100%, 1320px);
+            min-height: calc(100dvh - 10rem);
+        }
+
+        .hero-top-left {
+            grid-column: 1 / 4;
+            grid-row: 1;
+            align-self: start;
+            z-index: 2;
+            max-width: 1080px;
+            padding-top: 3rem;
+        }
+
+        /* Make the intro line more visible */
+        .hero-top-left .hero-intro {
+            opacity: 1 !important;
+            color: rgba(255,255,255,0.94) !important;
+            text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+            font-weight: 700;
+        }
+
+        .hero-top-right {
+            grid-column: 3;
+            grid-row: 1 / 3;
+            justify-self: end;
+            align-self: center;
+            z-index: 2;
+        }
+
+        .hero-center-layer {
+            grid-column: 1 / 4;
+            grid-row: 1 / 4;
+            position: absolute;
+            left: 50%;
+            bottom: -8rem;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            width: 100%;
+            z-index: 0;
+        }
+
+        .about-section {
+            background: var(--bg-about);
+            margin-top: 0;
+            padding-top: 8rem;
+            z-index: 20;
+            position: relative;
+            overflow: visible;
+            transform: translate3d(0, var(--about-lift, 0px), 0);
+        }
+
+        /* small responsive adjustments */
+        @media (max-width: 900px) {
+            .about-section { padding-top: 7rem; }
+        }
+
+        .hero-bottom-left {
+            grid-column: 1;
+            grid-row: 3;
+            align-self: end;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            --hero-bottom-shift: -2.6rem;
+            transform: translate3d(0, var(--hero-bottom-shift), 0);
+        }
+
+        .hero-bottom-right {
+            grid-column: 3;
+            grid-row: 2;
+            align-self: end;
+            justify-self: end;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+            max-width: 360px;
+            --hero-base-y: -1.25rem;
+            transform: translate3d(0, calc(var(--hero-base-y) + var(--hero-content-drift, 0px)), 0);
+        }
+
+        .hero-bigname {
+            font-size: clamp(3.4rem, 4.4vw, 5.4rem);
+            line-height: 0.9;
+            font-weight: 800;
+            letter-spacing: -1px;
+            color: var(--accent-primary);
+            margin: 0;
+            white-space: nowrap;
+            text-wrap: balance;
+        }
+
+        .hero-intro {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-secondary);
+            font-weight: 600;
+            margin-bottom: 0.85rem;
+        }
+
+        .hero-image-frame {
+            position: relative;
+            width: 480px;
+            height: auto;
+            border-radius: 0;
+            overflow: visible;
+            padding: 0;
+            background: transparent;
+            box-shadow: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            z-index: 3;
+        }
+
+        /* Hero image lift */
+        .hero-center-layer {
+            grid-column: 1 / 4;
+            grid-row: 1 / 4;
+            position: fixed;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            width: 100%;
+            max-width: 1320px;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .hero-image-frame img {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            border-radius: 0;
+            display: block;
+            box-shadow: none;
+            transition: none;
+            will-change: transform, filter;
+            /* Soft radial fade to blend portrait into background */
+            -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 64%, rgba(0,0,0,0) 100%), linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 82%, rgba(0, 0, 0, 0) 100%);
+            mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 64%, rgba(0,0,0,0) 100%), linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 82%, rgba(0, 0, 0, 0) 100%);
+            -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            transform-origin: center bottom;
+            transform: translate3d(0, var(--hero-image-lift, 0px), 0) scale(var(--hero-image-scale, 1));
+            filter: blur(var(--hero-image-blur, 0px));
+        }
+
+        .hero-binary-layer {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            display: block;
+            overflow: hidden;
+            z-index: 0;
+            user-select: none;
+            mix-blend-mode: screen;
+            opacity: 0.54;
+            -webkit-mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.98) 76%, rgba(0, 0, 0, 0.08) 92%, rgba(0, 0, 0, 0) 100%);
+            mask-image: linear-gradient(180deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.98) 76%, rgba(0, 0, 0, 0.08) 92%, rgba(0, 0, 0, 0) 100%);
+            -webkit-mask-size: 100% 100%;
+            mask-size: 100% 100%;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            backdrop-filter: blur(0.45px) saturate(155%);
+            -webkit-backdrop-filter: blur(0.45px) saturate(155%);
+        }
+
+        .hero-binary-glyph {
+            position: absolute;
+            display: block;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: rgba(42, 255, 96, 0.9);
+            letter-spacing: 0.3em;
+            line-height: 1;
+            z-index: 0;
+            will-change: transform, opacity;
+            animation: binaryGlyphFloat 7.5s ease-in-out infinite alternate;
+            /* keep backdrop filters but reduce overall intensity via parent opacity */
+
+        }
+
+        @keyframes binaryGlyphFloat {
+            0% { transform: translate3d(0, 10px, 0); opacity: 0; }
+            18% { opacity: 1; }
+            50% { transform: translate3d(0, -8px, 0); opacity: 0.88; }
+            82% { opacity: 0.16; }
+            100% { transform: translate3d(0, -18px, 0); opacity: 0; }
+        }
+
+        .scroll-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.85rem;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.72rem;
+            letter-spacing: 0.24em;
+            color: var(--text-secondary);
+            opacity: 0.9;
+        }
+
+        .scroll-label::before {
+            content: '';
+            width: 1px;
+            height: 72px;
+            background: linear-gradient(180deg, transparent, rgba(0,255,136,0.85), transparent);
+        }
+
+        .hero-socials a {
+            color: var(--text-secondary);
+            text-decoration: none;
+        }
+
+        .hero-socials a:hover {
+            color: var(--accent-primary);
+        }
+
+        .hero-socials {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+        }
+
+        .hero-socials a + a::before {
+            content: '/';
+            margin-right: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .hero-bio {
+            color: var(--text-secondary);
+            max-width: 360px;
+            line-height: 1.7;
+            margin: -0.35rem 0 0;
+            text-align: left;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .hero-action-primary,
+        .hero-action-secondary {
+            text-decoration: none;
+            display: inline-block;
+            padding: 0.7rem 1rem;
+            border-radius: 8px;
+        }
+
+        .hero-action-primary {
+            border: 1px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+
+        .hero-action-secondary {
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            background: var(--bg-card);
+        }
+
+        @media (max-width: 1200px) {
+            .hero-inner {
+                grid-template-columns: minmax(180px, 1fr) minmax(320px, 1.1fr) minmax(160px, 0.8fr);
+                gap: 1.25rem 1.5rem;
+            }
+
+            .hero-image-frame {
+                width: 420px;
+                height: auto;
+            }
+
+            .hero-bigname {
+                font-size: clamp(3.2rem, 4.3vw, 5rem);
+            }
+        }
+
+        @media (max-width: 900px) {
+            /* Switch hero to stacked column layout on small screens */
+            /* keep default backdrop on tablets; phone-specific blue backdrop moved to phone-only rule */
+
+            .hero-binary-layer {
+                opacity: 0.2;
+            }
+
+            .hero-inner {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.25rem 0;
+                padding-left: 1.5rem; /* px-6 */
+                padding-right: 1.5rem; /* px-6 */
+                padding-bottom: clamp(20rem, 54vw, 28rem);
+                width: 100%;
+                min-height: auto;
+                margin-top: 6.75rem;
+            }
+
+            /* hide the pseudo on small phones only; keep it for tablets/iPads */
+
+            .hero-top-left,
+            .hero-top-right,
+            .hero-center-layer,
+            .hero-bottom-left,
+            .hero-bottom-right {
+                grid-column: unset;
+                grid-row: unset;
+                justify-self: start;
+                align-self: start;
+                width: 100%;
+            }
+
+            .hero-top-right,
+            .scroll-label {
+                display: none;
+            }
+
+            .hero-center-layer {
+                position: fixed;
+                left: 50%;
+                bottom: -2rem;
+                transform: translateX(-50%);
+                align-items: flex-end;
+                margin-top: 0;
+                order: unset;
+            }
+
+            .hero-top-left {
+                padding-top: 0;
+                margin-top: 0.25rem;
+            }
+
+            .hero-bottom-left {
+                transform: none;
+                margin-top: 0.25rem;
+                order: 2; /* bio and actions should sit above the portrait */
+                max-width: 20rem;
+            }
+
+            /* Scale portrait down and push below the text (phones will override below) */
+            .hero-image-frame {
+                width: 640px;
+                height: auto;
+                margin: 0 auto;
+                transform: translateY(0.5rem);
+            }
+
+            /* iPad sizes: keep the green radial accent visible (moved to top-level media query) */
+
+            .hero-bigname {
+                font-size: clamp(2.2rem, 9vw, 4.2rem);
+                text-align: left;
+                white-space: normal;
+                margin-bottom: 0.6rem;
+            }
+
+            .hero-bio {
+                max-width: 20rem;
+                font-size: 0.92rem;
+                line-height: 1.45;
+                color: rgba(255, 255, 255, 0.86);
+            }
+
+            .hero-bottom-right {
+                max-width: none;
+                transform: none;
+            }
+
+            .hero-actions { margin-top: 0.65rem; }
+        }
+
+        @media (min-height: 760px) and (max-width: 900px) {
+            .hero-image-frame {
+                width: 320px;
+            }
+        }
+
+        @media (min-height: 840px) and (max-width: 900px) {
+            .hero-image-frame {
+                width: 360px;
+            }
+        }
+
+        @media (min-height: 760px) and (min-width: 901px) {
+            .hero-image-frame {
+                width: 460px;
+            }
+        }
+
+        @media (min-height: 900px) and (min-width: 901px) {
+            .hero-image-frame {
+                width: 520px;
+            }
+        }
+
+        /* Desktop-only: larger hero portrait */
+        @media (min-width: 1201px) {
+            .hero-image-frame {
+                width: 640px;
+            }
+        }
+
+        /* Top-level iPad range: restore green radial accent */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .hero-backdrop {
+                background:
+                    radial-gradient(circle at 50% 44%, rgba(0, 255, 136, 0.30) 0%, rgba(0, 255, 136, 0.16) 16%, transparent 38%),
+                    radial-gradient(circle at 50% 52%, rgba(0, 136, 255, 0.08) 0%, transparent 42%),
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 26%),
+                    linear-gradient(180deg, #101010 0%, #0a0a0a 100% ) !important;
+            }
+            .hero-backdrop::before {
+                display: block !important;
+                opacity: 0.55;
+            }
+        }
+
+        .is-visible {
+            opacity: 1;
+            transform: translateY(0) translateX(0);
+        }
+
+        .slide-in-right.is-visible {
+            transform: translateX(0);
+        }
+
+        .motion-link.is-visible {
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            html { scroll-behavior: auto; }
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .fade-in-up,
+            .slide-in-right,
+            .motion-section,
+            .motion-card,
+            .motion-chip,
+            .motion-link {
+                opacity: 1 !important;
+                transform: none !important;
+            }
+        }
+
+        /* Final override: restore green radial for iPads */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .hero-backdrop {
+                background:
+                    radial-gradient(circle at 50% 44%, rgba(0, 255, 136, 0.30) 0%, rgba(0, 255, 136, 0.16) 16%, transparent 38%) !important,
+                    radial-gradient(circle at 50% 52%, rgba(0, 136, 255, 0.08) 0%, transparent 42%) !important,
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.02), transparent 26%) !important,
+                    linear-gradient(180deg, #101010 0%, #0a0a0a 100%) !important;
+            }
+        }
+
+        /* iPad: make hero portrait large like desktop */
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .hero-center-layer .hero-image-frame {
+                width: 640px !important; /* match desktop size for iPad landscape */
+                max-width: calc(100% - 48px) !important;
+            }
+            /* reserve extra bottom space so text doesn't overlap the larger portrait */
+            .hero-inner {
+                padding-bottom: clamp(24rem, 48vw, 32rem);
+            }
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-primary); }
         ::-webkit-scrollbar-thumb {
             background: var(--border);
             border-radius: 4px;
         }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--accent-primary);
-        }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-primary); }
     </style>
 </head>
 <body>
     <a href="#main-content" class="skip-link" style="position:absolute;left:-999px;top:auto;width:1px;height:1px;overflow:hidden;background:#222;color:#fff;z-index:10000;">Skip to main content</a>
-    <div class="grain"  aria-hidden="true" title="Background grain texture"></div>
-    
-    <main id="main-content" role="main" aria-label="Main content"></main>
+    <div class="grain" aria-hidden="true" title="Background grain texture"></div>
+
+    <main id="main-content" role="main" aria-label="Main content">
         <div id="root"></div>
     </main>
 
-    <script src="./components/Header.js" type="text/babel"></script>
-    <script src="./components/Hero.js" type="text/babel"></script>
+    <script src="./components/Header.js?v=2" type="text/babel"></script>
+    <script src="./components/Hero.js?v=4" type="text/babel"></script>
     <script src="./components/About.js" type="text/babel"></script>
     <script src="./components/Experience.js" type="text/babel"></script>
     <script src="./components/Projects.js" type="text/babel"></script>
     <script src="./components/Contact.js" type="text/babel"></script>
     <script src="./components/Footer.js" type="text/babel"></script>
     <script src="./components/App.js" type="text/babel"></script>
+    <script>
+        (function () {
+            function applyGreen() {
+                const w = window.innerWidth || document.documentElement.clientWidth;
+                const hb = document.querySelector('.hero-backdrop');
+                if (!hb) return;
+                const existing = hb.querySelector('.hero-green');
+                if (w >= 768 && w <= 1024) {
+                    if (!existing) {
+                        const d = document.createElement('div');
+                        d.className = 'hero-green';
+                        hb.appendChild(d);
+                    }
+                } else {
+                    if (existing) existing.remove();
+                }
+            }
+
+            window.addEventListener('resize', applyGreen);
+            document.addEventListener('DOMContentLoaded', applyGreen);
+            // Observe for dynamic changes and ensure .hero-green persists
+            const observer = new MutationObserver(() => {
+                applyGreen();
+            });
+            observer.observe(document.body, { childList: true, subtree: true });
+            applyGreen();
+        })();
+    </script>
+    <script>
+        // Enforce larger hero image on iPad viewports via inline style
+        (function () {
+            function enforceIpadHero() {
+                const w = window.innerWidth || document.documentElement.clientWidth;
+                const el = document.querySelector('.hero-center-layer .hero-image-frame') || document.querySelector('.hero-image-frame');
+                if (!el) return;
+                if (w >= 768 && w <= 1024) {
+                    el.style.width = '640px';
+                    el.style.maxWidth = 'calc(100% - 48px)';
+                } else {
+                    el.style.width = '';
+                    el.style.maxWidth = '';
+                }
+            }
+
+            window.addEventListener('resize', enforceIpadHero);
+            document.addEventListener('DOMContentLoaded', enforceIpadHero);
+            // keep trying until the hero element mounts (React may render it later)
+            const interval = setInterval(() => {
+                enforceIpadHero();
+                if (document.querySelector('.hero-image-frame')) {
+                    clearInterval(interval);
+                }
+            }, 120);
+        })();
+    </script>
+    <script>
+        // Inject a high-priority CSS override for iPad viewports to ensure larger hero
+        (function () {
+            const css = `@media (min-width: 768px) and (max-width: 1024px) { .hero-center-layer .hero-image-frame, .hero-image-frame { width: 640px !important; max-width: calc(100% - 48px) !important; } .hero-inner { padding-bottom: clamp(24rem,48vw,32rem) !important; } }`;
+            const s = document.createElement('style');
+            s.setAttribute('data-generated','ipad-hero-override');
+            s.appendChild(document.createTextNode(css));
+            document.head.appendChild(s);
+        })();
+    </script>
+    <script>
+        // Delayed enforcement: set the hero image width after a short delay to ensure React mounted
+        (function () {
+            function apply() {
+                const w = window.innerWidth || document.documentElement.clientWidth;
+                const el = document.querySelector('.hero-image-frame');
+                if (!el) return;
+                if (w >= 768 && w <= 1024) {
+                    el.style.width = '640px';
+                    el.style.maxWidth = 'calc(100% - 48px)';
+                } else {
+                    el.style.width = '';
+                    el.style.maxWidth = '';
+                }
+            }
+
+            setTimeout(apply, 1000);
+            window.addEventListener('resize', () => setTimeout(apply, 300));
+        })();
+    </script>
+    <script>
+        (function () {
+            const targets = '.motion-section, .fade-in-up, .slide-in-right, .motion-card, .motion-chip, .motion-link';
+            const revealed = new WeakSet();
+            let revealIndex = 0;
+            let scrollTicking = false;
+            let mutationObserver = null;
+
+            const isInView = element => {
+                const rect = element.getBoundingClientRect();
+                const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+                const viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+
+                return (
+                    rect.bottom > viewportHeight * 0.12 &&
+                    rect.top < viewportHeight * 0.88 &&
+                    rect.right > 0 &&
+                    rect.left < viewportWidth
+                );
+            };
+
+            (function () {
+                const findElements = () => ({
+                    stack: document.querySelector('.hero-about-stack'),
+                    hero: document.querySelector('#hero-stage'),
+                    about: document.querySelector('#about')
+                });
+
+                const clamp = value => Math.min(Math.max(value, 0), 1);
+                let ticking = false;
+
+                const applyTransitionStyles = () => {
+                    const { stack, hero, about } = findElements();
+
+                    if (!stack || !hero || !about) {
+                        return false;
+                    }
+
+                    const viewportHeight = window.innerHeight || document.documentElement.clientHeight || 1;
+                    const stackTop = stack.getBoundingClientRect().top + window.scrollY;
+                    const progress = clamp((window.scrollY - stackTop) / viewportHeight);
+                    const inverseProgress = 1 - progress;
+
+                    hero.style.setProperty('--hero-image-scale', (1 - progress * 0.05).toFixed(4));
+                    hero.style.setProperty('--hero-image-blur', `${(progress * 4).toFixed(2)}px`);
+                    hero.style.setProperty('--hero-image-lift', `${(-progress * 18).toFixed(2)}px`);
+                    hero.style.setProperty('--hero-content-drift', `${(progress * 14).toFixed(2)}px`);
+                    about.style.setProperty('--about-lift', `${(inverseProgress * 20).toFixed(2)}px`);
+                    about.style.setProperty('--about-edge-glow', `${(0.28 + progress * 0.22).toFixed(3)}`);
+
+                    return true;
+                };
+
+                const start = () => {
+                    if (!applyTransitionStyles()) {
+                        return false;
+                    }
+
+                    const onScroll = () => {
+                        if (ticking) {
+                            return;
+                        }
+
+                        ticking = true;
+
+                        requestAnimationFrame(() => {
+                            applyTransitionStyles();
+                            ticking = false;
+                        });
+                    };
+
+                    window.addEventListener('scroll', onScroll, { passive: true });
+                    window.addEventListener('resize', onScroll);
+
+                    return true;
+                };
+
+                const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+                if (prefersReducedMotion) {
+                    const waitForReducedMotionNodes = () => {
+                        const { hero, about } = findElements();
+
+                        if (!hero || !about) {
+                            return false;
+                        }
+
+                        hero.style.setProperty('--hero-image-scale', '1');
+                        hero.style.setProperty('--hero-image-blur', '0px');
+                        hero.style.setProperty('--hero-image-lift', '0px');
+                        hero.style.setProperty('--hero-content-drift', '0px');
+                        about.style.setProperty('--about-lift', '0px');
+                        about.style.setProperty('--about-edge-glow', '0.28');
+                        return true;
+                    };
+
+                    if (!waitForReducedMotionNodes()) {
+                        const observer = new MutationObserver(() => {
+                            if (waitForReducedMotionNodes()) {
+                                observer.disconnect();
+                            }
+                        });
+
+                        observer.observe(document.body, {
+                            childList: true,
+                            subtree: true
+                        });
+                    }
+
+                    return;
+                }
+
+                if (start()) {
+                    return;
+                }
+
+                const observer = new MutationObserver(() => {
+                    if (start()) {
+                        observer.disconnect();
+                    }
+                });
+
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+            })();
+
+            const revealElement = element => {
+                if (revealed.has(element)) {
+                    return;
+                }
+
+                revealed.add(element);
+
+                if (!element.style.transitionDelay) {
+                    element.style.transitionDelay = `${Math.min(revealIndex * 60, 420)}ms`;
+                }
+
+                revealIndex += 1;
+
+                requestAnimationFrame(() => {
+                    element.classList.add('is-visible');
+                });
+            };
+
+            const scan = () => {
+                document.querySelectorAll(targets).forEach(element => {
+                    if (isInView(element)) {
+                        revealElement(element);
+                    }
+                });
+            };
+
+            const onScroll = () => {
+                if (scrollTicking) {
+                    return;
+                }
+
+                scrollTicking = true;
+                requestAnimationFrame(() => {
+                    scan();
+                    scrollTicking = false;
+                });
+            };
+
+            const start = () => {
+                if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                    document.querySelectorAll(targets).forEach(element => element.classList.add('is-visible'));
+                    return;
+                }
+
+                scan();
+                requestAnimationFrame(scan);
+                setTimeout(scan, 250);
+
+                window.addEventListener('scroll', onScroll, { passive: true });
+                window.addEventListener('resize', onScroll);
+
+                if (mutationObserver) {
+                    mutationObserver.disconnect();
+                }
+
+                mutationObserver = new MutationObserver(scan);
+                mutationObserver.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+            };
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', start, { once: true });
+            } else {
+                start();
+            }
+        })();
+    </script>
 </body>
 </html>

@@ -12,16 +12,16 @@ const Experience = () => {
   if (!exp) return null;
 
   return (
-    <section id="experience" style={{padding: '8rem 0', background: 'var(--bg-primary)'}}>
+    <section id="experience" style={{padding: '8rem 0', background: 'var(--bg-primary)'}} className="motion-section">
       <div className="container">
-        <h2 style={{fontSize: '2.5rem', fontWeight: '700', marginBottom: '3rem', display: 'flex', alignItems: 'center', gap: '1rem'}}>
+        <h2 style={{fontSize: '2.5rem', fontWeight: '700', marginBottom: '3rem', display: 'flex', alignItems: 'center', gap: '1rem'}} className="motion-underline">
           <span style={{color: 'var(--accent-primary)', fontFamily: "'JetBrains Mono', monospace", fontSize: '1.5rem'}}>02.</span>
           Experience
           <div style={{flex: 1, height: '1px', background: 'var(--border)', maxWidth: '300px'}} />
         </h2>
         <div style={{display: 'grid', gap: '3rem'}}>
           {exp.jobs.map((job, i) => (
-            <div key={i} style={{background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '2rem', transition: 'all 0.3s ease', animationDelay: `${i * 0.1}s`}} className="fade-in-up"
+            <div key={i} style={{background: 'var(--bg-card)', border: '1px solid var(--border)', padding: '2rem', transition: 'all 0.3s ease', animationDelay: `${i * 0.1}s`}} className="fade-in-up motion-card"
               onMouseEnter={e => {e.currentTarget.style.borderColor = 'var(--accent-primary)'; e.currentTarget.style.transform = 'translateX(10px)';}}
               onMouseLeave={e => {e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'translateX(0)';}}>
               <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '1rem', flexWrap: 'wrap', gap: '1rem'}}>
