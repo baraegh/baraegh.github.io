@@ -19,9 +19,6 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -903,14 +900,19 @@
         <div id="root"></div>
     </main>
 
-    <script src="./components/Header.js?v=2" type="text/babel"></script>
-    <script src="./components/Hero.js?v=4" type="text/babel"></script>
-    <script src="./components/About.js" type="text/babel"></script>
-    <script src="./components/Experience.js" type="text/babel"></script>
-    <script src="./components/Projects.js" type="text/babel"></script>
-    <script src="./components/Contact.js" type="text/babel"></script>
-    <script src="./components/Footer.js" type="text/babel"></script>
-    <script src="./components/App.js" type="text/babel"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+    
+    <script type="text/babel" data-presets="react" src="./components/Header.js?v=2"></script>
+    <script type="text/babel" data-presets="react" src="./components/Hero.js?v=4"></script>
+    <script type="text/babel" data-presets="react" src="./components/About.js"></script>
+    <script type="text/babel" data-presets="react" src="./components/Experience.js"></script>
+    <script type="text/babel" data-presets="react" src="./components/Projects.js"></script>
+    <script type="text/babel" data-presets="react" src="./components/Contact.js"></script>
+    <script type="text/babel" data-presets="react" src="./components/Footer.js"></script>
+    <script type="text/babel" data-presets="react" src="./components/App.js"></script>
+
     <script>
         (function () {
             function applyGreen() {
